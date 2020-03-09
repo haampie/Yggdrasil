@@ -1,5 +1,7 @@
 # LLVMBuilder -- reliable LLVM builds all the time.
-using BinaryBuilder
+using BinaryBuilder, Pkg, LibGit2
+
+include("../../fancy_toys.jl")
 
 const llvm_tags = Dict(
     v"6.0.1" => "d359f2096850c68b708bc25a7baca4282945949f",
@@ -248,7 +250,6 @@ function configure(ARGS, version)
         "./bundled",
     ]
 
-
     products = [
         LibraryProduct("libclang", :libclang, dont_dlopen=true),
         LibraryProduct(["LLVM", "libLLVM"], :libllvm, dont_dlopen=true),
@@ -262,7 +263,7 @@ function configure(ARGS, version)
         push!(products, ExecutableProduct("llvm-mca", :llvm_mca, "tools"))
     end
 
-    name = "LLVM"
+    name = "LLVM_full"
     config = "LLVM_MAJ_VER=$(version.major)\n"
     if assert
         config *= "ASSERTS=1\n"
@@ -271,10 +272,7 @@ function configure(ARGS, version)
     return name, sources, config * buildscript, products
 end
 
-
 # Dependencies that must be installed before this package can be built
 # TODO: Zlib, LibXML2
 dependencies = [
 ]
-
-
