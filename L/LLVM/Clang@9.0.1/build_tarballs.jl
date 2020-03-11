@@ -2,7 +2,7 @@ version = v"9.0.1"
 
 include("../common.jl")
 
-name = "clang"
+name = "Clang"
 sources = []
 products = [
     LibraryProduct("libclang", :libclang, dont_dlopen=true),
